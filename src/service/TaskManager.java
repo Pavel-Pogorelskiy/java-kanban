@@ -6,7 +6,7 @@ import entility.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class KanbanManager {
+public class TaskManager {
     private int id;
     private HashMap<Integer, SubTask> subTaskMemory = new HashMap<>();
     private HashMap<Integer, Task> taskMemory = new HashMap<>();
@@ -101,29 +101,17 @@ public class KanbanManager {
             epic.setStatus("NEW");
         } else {
             ArrayList<String> status = new ArrayList<>();
-            for (SubTask subTask : subTaskMemory.values()) {
-                if (subTask.getEpicId() == epic.getId()) {
-                    String subTaskStatus = subTask.getStatus();
-                    status.add(subTaskStatus);
-                }
+            ArrayList<Integer> subTaskId = epic.getSubtaskIds();
+            for (int i = 0; i < subTaskId.size(); i++) {
+            SubTask subTask = subTaskMemory.get(subTaskId.get(i));
+            status.add(subTask.getStatus());
             }
-            if (status.contains("IN_PROGRESS")) {
+            if (status.contains("IN_PROGRESS")||(status.contains("NEW")&&status.contains("DONE"))) {
                 epic.setStatus("IN_PROGRESS");
+            } else if (status.contains("NEW")) {
+                epic.setStatus("NEW");
             } else {
-                for (int i = 0; i < status.size(); i++) {
-                    String subStatus = status.get(i);
-                    if (subStatus == "NEW" && status.contains("DONE")) {
-                        epic.setStatus("IN_PROGRESS");
-                    } else if (subStatus == "DONE" && status.contains("NEW")) {
-                        epic.setStatus("IN_PROGRESS");
-                    } else if (subStatus == "NEW") {
-                        epic.setStatus("NEW");
-                        break;
-                    } else {
-                        epic.setStatus("DONE");
-                        break;
-                    }
-                }
+                epic.setStatus("DONE");
             }
         }
     }
@@ -168,6 +156,12 @@ public class KanbanManager {
     }
 
     public void deleteSubTaskById(int id) {
+        SubTask subTask = subTaskMemory.get(id);
+        int epicId = subTask.getEpicId();
+        Epic epic = epicMemory.get(epicId);
+        ArrayList<Integer> subTaskIds = epic.getSubtaskIds();
+        subTaskIds.removeIf(n -> n == id);
         subTaskMemory.remove(id);
+        statusEpic(epic);
     }
 }

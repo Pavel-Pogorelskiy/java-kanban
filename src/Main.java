@@ -1,12 +1,12 @@
 import entility.Epic;
 import entility.SubTask;
 import entility.Task;
-import service.KanbanManager;
+import service.TaskManager;
 
 public class Main {
 
     public static void main(String[] args) {
-        KanbanManager manager = new KanbanManager();
+        TaskManager manager = new TaskManager();
         Task task1 = new Task("Задача №1", "Описание задачи №1");
         Task task2 = new Task("Задача №2", "Описание задачи №2");
         Epic epic1 = new Epic("Эпика №1", "Описание эпика №1");
@@ -38,10 +38,6 @@ public class Main {
         System.out.println(manager.getAllSubTasks());
         manager.deleteTaskById(1);
         manager.deleteEpicById(3);
-
-        /* нужны уточнения по поводу удаление SubTask при удалении Epic. Реализовано
-        что при удалении Эпика удаляются также его задачи и при удалении всех эпиков такая же логика. */
-
         System.out.println(manager.getAllTasks());
         System.out.println(manager.getAllEpics());
         System.out.println(manager.getAllSubTasks());
