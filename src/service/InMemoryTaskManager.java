@@ -24,7 +24,7 @@ public class InMemoryTaskManager implements TaskManager {
     // Методы для Task
 
     @Override
-    public ArrayList<Task> getAllTasks() {
+    public List<Task> getAllTasks() {
         return new ArrayList(taskMemory.values());
     }
 
@@ -61,7 +61,7 @@ public class InMemoryTaskManager implements TaskManager {
     // Методы для Epic
 
     @Override
-    public ArrayList<Epic> getAllEpics() {
+    public List<Epic> getAllEpics() {
         return new ArrayList(epicMemory.values());
     }
 
@@ -81,7 +81,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public ArrayList<SubTask> subTasksByEpic(Epic epic) {
+    public List<SubTask> subTasksByEpic(Epic epic) {
         int epicId = epic.getId();
         ArrayList<SubTask> subTasks = new ArrayList<>();
         for (SubTask subTask : subTaskMemory.values()) {
@@ -140,7 +140,7 @@ public class InMemoryTaskManager implements TaskManager {
     // Методы для SubTask
 
     @Override
-    public ArrayList<SubTask> getAllSubTasks() {
+    public List<SubTask> getAllSubTasks() {
         return new ArrayList(subTaskMemory.values());
     }
 
@@ -154,12 +154,10 @@ public class InMemoryTaskManager implements TaskManager {
             ArrayList<Integer> id = new ArrayList<>();
             id.add(subTask.getId());
             epic.setSubtaskIds(id);
-            statusEpic(epic);
         } else {
             subTaskIds.add(subTask.getId());
-            statusEpic(epic);
         }
-
+        statusEpic(epic);
     }
 
     @Override

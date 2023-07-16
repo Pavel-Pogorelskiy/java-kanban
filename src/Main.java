@@ -48,8 +48,8 @@ public class Main {
         taskManager.getTaskById(1);
         taskManager.getSubTaskById(4);
         taskManager.getTaskById(5);
-        taskManager.getEpicById(3);
-        taskManager.getTaskById(2);
+        taskManager.getEpicById(6);
+        taskManager.getTaskById(1);
         taskManager.getTaskById(7);
         taskManager.getSubTaskById(6);
         taskManager.getTaskById(1);
@@ -62,6 +62,7 @@ public class Main {
         taskManager.getEpicById(3);
         taskManager.getSubTaskById(4);
         taskManager.getEpicById(6);
+        taskManager.getSubTaskById(5);
         taskManager.getSubTaskById(5);
         System.out.println(taskManager.getHistory());
     }

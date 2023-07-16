@@ -8,21 +8,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface  TaskManager {
-    ArrayList<Task> getAllTasks();
+    List<Task> getAllTasks();
     void saveTask(Task task);
     void updateTask(Task task);
     void deleteAllTask();
     Task getTaskById(int id);
     void deleteTaskById(int id);
-    ArrayList <Epic> getAllEpics();
+    List <Epic> getAllEpics();
     void saveEpic(Epic epic);
     void updateEpic(Epic epic);
-    ArrayList <SubTask> subTasksByEpic(Epic epic);
+    List <SubTask> subTasksByEpic(Epic epic);
     void deleteAllEpic();
     Epic getEpicById(int id);
     void deleteEpicById(int id);
     void statusEpic(Epic epic);
-    ArrayList <SubTask> getAllSubTasks();
+    List <SubTask> getAllSubTasks();
     void saveSubTask(SubTask subTask);
     void updateSubTask(SubTask subTask);
     void deleteAllSubTask();
