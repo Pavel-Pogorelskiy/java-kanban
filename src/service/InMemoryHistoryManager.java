@@ -2,26 +2,24 @@ package service;
 
 import entility.Task;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private static final int MEMORY_HISTORY = 10;
-    private final List<Task> history = new ArrayList<>();
-
+    private final CustomLinkedList history = new CustomLinkedList();
     @Override
     public List<Task> getHistory() {
-        return List.copyOf(history);
+        return history.getTasks();
+    }
+    @Override
+    public void addHistory(Task task) {
+        if (history.map.containsKey(task.getId())) {
+            history.removeNode(history.map.get(task.getId()));
+        }
+        history.linkLast(task);
     }
 
     @Override
-    public void addHistory(Task task) {
-        if (task == null) {
-            return;
-        }
-        if (history.size() >= MEMORY_HISTORY) {
-            history.remove(0);
-        }
-        history.add(task);
+    public void remove(int id) {
+        history.removeNode(history.map.get(id));
     }
 }

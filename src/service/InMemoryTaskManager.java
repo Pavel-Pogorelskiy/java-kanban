@@ -44,6 +44,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllTask() {
+        for (Task task : taskMemory.values()) {
+            historyManager.remove(task.getId());
+        }
         taskMemory.clear();
     }
 
@@ -56,6 +59,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTaskById(int id) {
         taskMemory.remove(id);
+        historyManager.remove(id);
     }
 
     // Методы для Epic
@@ -94,6 +98,12 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllEpic() {
+        for (Task epic : epicMemory.values()) {
+            historyManager.remove(epic.getId());
+        }
+        for (Task subTask : subTaskMemory.values()) {
+            historyManager.remove(subTask.getId());
+        }
         epicMemory.clear();
         subTaskMemory.clear();
     }
@@ -112,8 +122,10 @@ public class InMemoryTaskManager implements TaskManager {
         for (int i = 0; i < subTaskIds.size(); i++) {
             int subTaskId = subTaskIds.get(i);
             subTaskMemory.remove(subTaskId);
+            historyManager.remove(subTaskId);
         }
         epicMemory.remove(id);
+        historyManager.remove(id);
     }
 
     @Override
@@ -173,8 +185,14 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteAllSubTask() {
         for (Epic epic : epicMemory.values()) {
             ArrayList<Integer> subTaskId = epic.getSubtaskIds();
+            if (subTaskId == null) {
+                continue;
+            }
             subTaskId.clear();
             statusEpic(epic);
+        }
+        for (Task subTask : subTaskMemory.values()) {
+            historyManager.remove(subTask.getId());
         }
         subTaskMemory.clear();
     }
@@ -193,6 +211,7 @@ public class InMemoryTaskManager implements TaskManager {
         subTaskIds.removeIf(n -> n == id);
         subTaskMemory.remove(id);
         statusEpic(epic);
+        historyManager.remove(id);
     }
     @Override
     public List <Task> getHistory() {
