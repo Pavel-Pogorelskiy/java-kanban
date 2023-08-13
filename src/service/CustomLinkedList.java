@@ -24,9 +24,13 @@ public class CustomLinkedList {
         }
     }
 
-    Map<Integer, Node> map = new HashMap<>();
+    private Map<Integer, Node> map = new HashMap<>();
 
-    void linkLast(Task task) {
+    public Map<Integer, Node> getMap() {
+        return map;
+    }
+
+    public void linkLast(Task task) {
         Node node = new Node(task);
         if (first == null) {
             first = node;
@@ -40,9 +44,6 @@ public class CustomLinkedList {
      public List<Task> getTasks() {
         Node current = first;
         List <Task> result = new ArrayList<>();
-        if (first == null) {
-            return result;
-        }
         while (current != null) {
             result.add(current.getValue());
             current = current.next;
