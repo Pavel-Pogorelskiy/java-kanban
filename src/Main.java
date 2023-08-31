@@ -8,7 +8,7 @@ import service.TaskManager;
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager taskManager = Managers.getDefault();
+        TaskManager taskManager = Managers.getDefaultBackedTask();
         Task task1 = new Task("Задача №1", "Описание задачи №1");
         Task task2 = new Task("Задача №2", "Описание задачи №2");
         Epic epic1 = new Epic("Эпика №1", "Описание эпика №1");

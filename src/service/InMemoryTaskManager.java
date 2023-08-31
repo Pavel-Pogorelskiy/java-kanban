@@ -9,11 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
-    private int id;
-    private final HistoryManager historyManager = Managers.getDefaultHistory();
-    private HashMap<Integer, SubTask> subTaskMemory = new HashMap<>();
-    private HashMap<Integer, Task> taskMemory = new HashMap<>();
-    private HashMap<Integer, Epic> epicMemory = new HashMap<>();
+    protected int id;
+    protected final HistoryManager historyManager = Managers.getDefaultHistory();
+    protected HashMap<Integer, SubTask> subTaskMemory = new HashMap<>();
+    protected HashMap<Integer, Task> taskMemory = new HashMap<>();
+    protected HashMap<Integer, Epic> epicMemory = new HashMap<>();
 
     @Override
     public Integer numberId() {
