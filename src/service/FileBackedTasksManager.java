@@ -15,7 +15,7 @@ import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefaultBackedTask();
         Task task1 = new Task("Задача №1", "Описание задачи №1");
         Task task2 = new Task("Задача №2", "Описание задачи №2");
@@ -72,52 +72,45 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             writer.write(CSVFormatHandler.historyToString(historyManager));
 
         } catch (IOException exception) {
-            throw new RuntimeException("Ошибка записи файла");
+            throw new ManagerSaveException("Ошибка записи файла");
         }
     }
 
-    static FileBackedTasksManager loadFromFile(File file) throws IOException {
+    static FileBackedTasksManager loadFromFile(File file) {
         FileBackedTasksManager manager = new FileBackedTasksManager();
-        String content = Files.readString(Path.of(String.valueOf(file)));
-        String[] textString = content.split("\n");
-        for (int i = 1; i < textString.length; i++) {
-            if (textString[i].isEmpty()) {
-                List <Integer> history = CSVFormatHandler.historyFromString(textString[i + 1]);
-                for (int j = 0; j < history.size(); j++) {
-                    int id = history.get(j);
-                    if (manager.taskMemory.containsKey(id)) {
-                        manager.historyManager.addHistory(manager.taskMemory.get(id));
-                    } else if (manager.epicMemory.containsKey(id)) {
-                        manager.historyManager.addHistory(manager.epicMemory.get(id));
+        try {
+            String content = Files.readString(Path.of(String.valueOf(file)));
+            String[] textString = content.split("\n");
+            for (int i = 1; i < textString.length; i++) {
+                if (textString[i].isEmpty()) {
+                    List<Integer> history = CSVFormatHandler.historyFromString(textString[i + 1]);
+                    for (int j = 0; j < history.size(); j++) {
+                        int id = history.get(j);
+                        if (manager.taskMemory.containsKey(id)) {
+                            manager.historyManager.addHistory(manager.taskMemory.get(id));
+                        } else if (manager.epicMemory.containsKey(id)) {
+                            manager.historyManager.addHistory(manager.epicMemory.get(id));
+                        } else {
+                            manager.historyManager.addHistory(manager.subTaskMemory.get(id));
+                        }
+                    }
+                    break;
+                } else {
+                    Task task = CSVFormatHandler.fromString(textString[i]);
+                    if (task.getType() == Type.TASK) {
+                        manager.taskMemory.put(task.getId(), task);
+                    } else if (task.getType() == Type.EPIC) {
+                        manager.epicMemory.put(task.getId(), (Epic) task);
                     } else {
-                        manager.historyManager.addHistory(manager.subTaskMemory.get(id));
+                        manager.subTaskMemory.put(task.getId(), (SubTask) task);
                     }
                 }
-                break;
-            } else {
-                Task task = CSVFormatHandler.fromString(textString[i]);
-                if (task.getType() == Type.TASK) {
-                    manager.taskMemory.put(task.getId(), task);
-                } else if (task.getType() == Type.EPIC) {
-                    manager.epicMemory.put(task.getId(), (Epic) task);
-                } else {
-                    manager.subTaskMemory.put(task.getId(), (SubTask) task);
-                }
             }
+            return manager;
+        } catch (IOException e) {
+            throw new ManagerSaveException("Ошибка чтения");
         }
-        return manager;
     }
-
-    @Override
-    public Integer numberId() {
-        return super.numberId();
-    }
-
-    @Override
-    public List<Task> getAllTasks() {
-        return super.getAllTasks();
-    }
-
     @Override
     public void saveTask(Task task) {
         super.saveTask(task);
@@ -150,11 +143,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public List<Epic> getAllEpics() {
-        return super.getAllEpics();
-    }
-
-    @Override
     public void saveEpic(Epic epic) {
         super.saveEpic(epic);
         save();
@@ -164,11 +152,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     public void updateEpic(Epic epic) {
         super.updateEpic(epic);
         save();
-    }
-
-    @Override
-    public List<SubTask> subTasksByEpic(Epic epic) {
-         return super.subTasksByEpic(epic);
     }
 
     @Override
@@ -188,16 +171,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     public void deleteEpicById(int id) {
         super.deleteEpicById(id);
         save();
-    }
-
-    @Override
-    public void statusEpic(Epic epic) {
-        super.statusEpic(epic);
-    }
-
-    @Override
-    public List<SubTask> getAllSubTasks() {
-        return super.getAllSubTasks();
     }
 
     @Override
@@ -229,10 +202,5 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     public void deleteSubTaskById(int id) {
         super.deleteSubTaskById(id);
         save();
-    }
-
-    @Override
-    public List<Task> getHistory() {
-        return super.getHistory();
     }
 }
