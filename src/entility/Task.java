@@ -1,23 +1,34 @@
 package entility;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Task {
+    final static DateTimeFormatter FORMATTER_TIME = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
     protected String name;
     protected String description;
     protected Status status;
+    protected Integer duration;
+    protected LocalDateTime startTime;
 
     protected Type type;
-    private int id;
+    protected int id;
 
-    public Task(String name, String description, Status status) {
+    public Task(String name, String description, String startTime, int duration) {
         this.name = name;
         this.description = description;
-        this.status = status;
+        this.startTime = LocalDateTime.parse(startTime, FORMATTER_TIME);
+        this.duration = duration;
+        this.status = Status.NEW;
         type = Type.TASK;
     }
 
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
+        this.startTime = null;
+        this.duration = null;
         this.status = Status.NEW;
         type = Type.TASK;
     }
@@ -65,9 +76,59 @@ public class Task {
 
     @Override
     public String toString() {
-        return "[name = " + name
-                + ", descripsion = " + description
-                + ", status = " + status
-                + ", id = " + id +"]";
+        if (duration == null && getEndTime() == null) {
+            return "[name = " + name
+                    + ", descripsion = " + description
+                    + ", duration=" + duration
+                    + ", startTime=null"
+                    + ", endTime=" + getEndTime()
+                    + ", status = " + status
+                    + ", id = " + id + "]";
+        } else {
+            return "[name = " + name
+                    + ", descripsion = " + description
+                    + ", duration=" + duration
+                    + ", startTime=" + startTime.format(FORMATTER_TIME)
+                    + ", endTime=" + getEndTime().format(FORMATTER_TIME)
+                    + ", status = " + status
+                    + ", id = " + id + "]";
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+        Task t = (Task) obj;
+        return t.getName().equals(getName())&&t.getDescription().equals(getDescription())&&t.getId()
+                == (getId())&&t.getStatus().equals(getStatus())&&t.getType().equals(getType());
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        if (duration == null) {
+            return null;
+        } else {
+            return startTime.plusMinutes(duration);
+        }
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 }

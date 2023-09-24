@@ -4,7 +4,10 @@ import entility.Epic;
 import entility.SubTask;
 import entility.Task;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface  TaskManager {
     List<Task> getAllTasks();
@@ -28,6 +31,22 @@ public interface  TaskManager {
     SubTask getSubTaskById(int id);
     void deleteSubTaskById(int id);
     Integer numberId();
-
     List<Task> getHistory();
+    void setEpicMemory(HashMap<Integer, Epic> epicMemory);
+    void setSubTaskMemory(HashMap<Integer, SubTask> subTaskMemory);
+    HashMap<Integer, SubTask> getSubTaskMemory();
+    HashMap<Integer, Task> getTaskMemory();
+    void setTaskMemory(HashMap<Integer, Task> taskMemory);
+    HashMap<Integer, Epic> getEpicMemory();
+    List<Task> getPrioritizedTask();
+    void startAndEndTimeEpic(Epic epic);
+    LocalDateTime numberDataByTaskNotData();
+    void savePrioritizedTask(Task task);
+    void savePrioritizedSubTask(SubTask subTask);
+    Map<LocalDateTime, SubTask> getPrioritizedSubTasks();
+
+    LocalDateTime getNumberDate();
+
+    Map<LocalDateTime, Task> getPrioritizedTasks();
+    void validate(Task task);
 }

@@ -6,10 +6,12 @@ import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
     private final CustomLinkedList history = new CustomLinkedList();
+
     @Override
     public List<Task> getHistory() {
         return history.getTasks();
     }
+
     @Override
     public void addHistory(Task task) {
         if (history.getMap().containsKey(task.getId())) {
@@ -20,6 +22,8 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void remove(int id) {
-        history.removeNode(history.getMap().get(id));
+        if (history.getMap().containsKey(id)) {
+            history.removeNode(history.getMap().get(id));
+        }
     }
 }

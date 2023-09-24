@@ -10,6 +10,7 @@ import java.util.Map;
 public class CustomLinkedList {
     private Node last;
     private Node first;
+
     public static class Node {
         Task value;
         Node next;
@@ -39,11 +40,12 @@ public class CustomLinkedList {
             node.prev = last;
         }
         last = node;
-        map.put(task.getId(),node);
+        map.put(task.getId(), node);
     }
-     public List<Task> getTasks() {
+
+    public List<Task> getTasks() {
         Node current = first;
-        List <Task> result = new ArrayList<>();
+        List<Task> result = new ArrayList<>();
         while (current != null) {
             result.add(current.getValue());
             current = current.next;
@@ -67,5 +69,4 @@ public class CustomLinkedList {
         }
         map.remove(node.getValue().getId());
     }
-
 }
