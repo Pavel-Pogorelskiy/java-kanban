@@ -41,10 +41,6 @@ public interface  TaskManager {
     List<Task> getPrioritizedTask();
     void startAndEndTimeEpic(Epic epic);
     LocalDateTime numberDataByTaskNotData();
-    void savePrioritizedTask(Task task);
-    void savePrioritizedSubTask(SubTask subTask);
-    Map<LocalDateTime, SubTask> getPrioritizedSubTasks();
-
     LocalDateTime getNumberDate();
 
     Map<LocalDateTime, Task> getPrioritizedTasks();

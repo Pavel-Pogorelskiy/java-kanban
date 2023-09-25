@@ -16,9 +16,9 @@ public class Main {
                 "25.08.2023 16:00", 20);
         Epic epic1 = new Epic("Эпика №1", "Описание эпика №1");
         SubTask subTask1 = new SubTask("Подзадача 1", "Описание подзадачи 1",
-                3,"29.08.2023 13:00", 240);
+                3,"29.08.2023 12:30", 240);
         SubTask subTask2 = new SubTask("Подзадача 2", "Описание подзадачи 2",
-                3,"24.08.2023 13:10", 20);
+                3,"24.08.2023 12:10", 20);
         Epic epic2 = new Epic("Эпика №2", "Описание эпика №2");
         SubTask subTask3 = new SubTask("Подзадача 3", "Описание подзадачи 3", 3);
         taskManager.saveTask(task1);

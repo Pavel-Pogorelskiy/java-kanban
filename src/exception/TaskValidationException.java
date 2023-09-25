@@ -1,4 +1,4 @@
-package service;
+package exception;
 
 public class TaskValidationException extends RuntimeException {
     public TaskValidationException() {}

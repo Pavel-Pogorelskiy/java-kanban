@@ -4,15 +4,15 @@ import entility.Epic;
 import entility.Status;
 import entility.SubTask;
 import entility.Task;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import exception.TaskValidationException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TaskManagerTest <T extends TaskManager> {
+public abstract class TaskManagerTest <T extends TaskManager> {
     protected T taskManager;
     protected Task task1;
     protected Task task2;
@@ -109,7 +109,7 @@ public class TaskManagerTest <T extends TaskManager> {
         subTask1.setEpicId(1);
         taskManager.saveSubTask(subTask1);
         assertTrue(taskManager.getSubTaskMemory().containsValue(subTask1), "SubTask не сохраняется в HashMap");
-        assertTrue(taskManager.getPrioritizedSubTasks().containsValue(subTask1), "SubTask не сохраняется в TreeMap");
+        assertTrue(taskManager.getPrioritizedTasks().containsValue(subTask1), "SubTask не сохраняется в TreeMap");
         assertNotNull(taskManager.getEpicMemory().get(1).getSubtaskIds(), "В эпике не имеются подзадачи");
         assertEquals(Status.NEW, taskManager.getEpicMemory().get(1).getStatus(), "Не верный расчет статуса эпика");
     }
@@ -122,7 +122,7 @@ public class TaskManagerTest <T extends TaskManager> {
         subTask1.setEpicId(1);
         taskManager.saveSubTask(subTask1);
         assertTrue(taskManager.getSubTaskMemory().containsValue(subTask1), "SubTask не сохраняется в HashMap");
-        assertTrue(taskManager.getPrioritizedSubTasks().containsValue(subTask1), "SubTask не сохраняется в TreeMap");
+        assertTrue(taskManager.getPrioritizedTasks().containsValue(subTask1), "SubTask не сохраняется в TreeMap");
         assertNotNull(taskManager.getEpicMemory().get(1).getSubtaskIds(), "В эпике не имеются подзадачи");
         assertEquals(Status.IN_PROGRESS, taskManager.getEpicMemory().get(1).getStatus(), "Не верный расчет статуса эпика");
     }
@@ -135,7 +135,7 @@ public class TaskManagerTest <T extends TaskManager> {
         subTask1.setEpicId(1);
         taskManager.saveSubTask(subTask1);
         assertTrue(taskManager.getSubTaskMemory().containsValue(subTask1), "SubTask не сохраняется в HashMap");
-        assertTrue(taskManager.getPrioritizedSubTasks().containsValue(subTask1), "SubTask не сохраняется в TreeMap");
+        assertTrue(taskManager.getPrioritizedTasks().containsValue(subTask1), "SubTask не сохраняется в TreeMap");
         assertNotNull(taskManager.getEpicMemory().get(1).getSubtaskIds(), "В эпике не имеются подзадачи");
         assertEquals(Status.DONE, taskManager.getEpicMemory().get(1).getStatus(), "Не верный расчет статуса эпика");
     }
@@ -149,7 +149,7 @@ public class TaskManagerTest <T extends TaskManager> {
         taskManager.saveSubTask(subTask1);
         taskManager.saveSubTask(subTask2);
         assertTrue(taskManager.getSubTaskMemory().containsValue(subTask1), "SubTask не сохраняется в HashMap");
-        assertTrue(taskManager.getPrioritizedSubTasks().containsValue(subTask1), "SubTask не сохраняется в TreeMap");
+        assertTrue(taskManager.getPrioritizedTasks().containsValue(subTask1), "SubTask не сохраняется в TreeMap");
         assertNotNull(taskManager.getEpicMemory().get(1).getSubtaskIds(), "В эпике не имеются подзадачи");
         assertEquals(2, taskManager.getEpicMemory().get(1).getSubtaskIds().size());
         assertEquals(Status.NEW, taskManager.getEpicMemory().get(1).getStatus(), "Не верный расчет статуса эпика");
@@ -165,7 +165,7 @@ public class TaskManagerTest <T extends TaskManager> {
         taskManager.saveSubTask(subTask1);
         taskManager.saveSubTask(subTask2);
         assertTrue(taskManager.getSubTaskMemory().containsValue(subTask1), "SubTask не сохраняется в HashMap");
-        assertTrue(taskManager.getPrioritizedSubTasks().containsValue(subTask1), "SubTask не сохраняется в TreeMap");
+        assertTrue(taskManager.getPrioritizedTasks().containsValue(subTask1), "SubTask не сохраняется в TreeMap");
         assertNotNull(taskManager.getEpicMemory().get(1).getSubtaskIds(), "В эпике не имеются подзадачи");
         assertEquals(2, taskManager.getEpicMemory().get(1).getSubtaskIds().size());
         assertEquals(Status.IN_PROGRESS, taskManager.getEpicMemory().get(1).getStatus(), "Не верный расчет статуса эпика");
@@ -182,7 +182,7 @@ public class TaskManagerTest <T extends TaskManager> {
         taskManager.saveSubTask(subTask1);
         taskManager.saveSubTask(subTask2);
         assertTrue(taskManager.getSubTaskMemory().containsValue(subTask1), "SubTask не сохраняется в HashMap");
-        assertTrue(taskManager.getPrioritizedSubTasks().containsValue(subTask1), "SubTask не сохраняется в TreeMap");
+        assertTrue(taskManager.getPrioritizedTasks().containsValue(subTask1), "SubTask не сохраняется в TreeMap");
         assertNotNull(taskManager.getEpicMemory().get(1).getSubtaskIds(), "В эпике не имеются подзадачи");
         assertEquals(2, taskManager.getEpicMemory().get(1).getSubtaskIds().size());
         assertEquals(Status.DONE, taskManager.getEpicMemory().get(1).getStatus(), "Не верный расчет статуса эпика");
@@ -339,7 +339,7 @@ public class TaskManagerTest <T extends TaskManager> {
         assertNotNull(taskManager.getEpicMemory().values(), "Список Epic пуст");
         assertEquals(0, taskManager.getSubTaskMemory().size(), "Список не пуст, не удалились подзадачи");
         assertEquals(Status.NEW, taskManager.getEpicMemory().get(1).getStatus());
-        assertTrue(taskManager.getPrioritizedSubTasks().isEmpty());
+        assertTrue(taskManager.getPrioritizedTasks().isEmpty());
     }
 
     @Test
@@ -391,7 +391,7 @@ public class TaskManagerTest <T extends TaskManager> {
         taskManager.deleteEpicById(1);
         assertEquals(1, taskManager.getEpicMemory().size(), "Epic не удалился");
         assertEquals(0, taskManager.getSubTaskMemory().size(), "SubTask не удалилась вместе с Epic");
-        assertEquals(0, taskManager.getPrioritizedSubTasks().size(), "SubTask не удалилась вместе с Epic");
+        assertEquals(0, taskManager.getPrioritizedTasks().size(), "SubTask не удалилась вместе с Epic");
     }
 
     @Test
@@ -408,7 +408,7 @@ public class TaskManagerTest <T extends TaskManager> {
         taskManager.deleteSubTaskById(2);
         assertNotNull(taskManager.getAllEpics(), "Список Epic пуст");
         assertEquals(1, taskManager.getSubTaskMemory().size(), "Подзадача не удалилась");
-        assertEquals(1, taskManager.getPrioritizedSubTasks().size(), "Подзадача не удалилась");
+        assertEquals(1, taskManager.getPrioritizedTasks().size(), "Подзадача не удалилась");
         assertEquals(Status.DONE, taskManager.getEpicMemory().get(1).getStatus(), "Статус Эпика не изменился");
     }
 
@@ -426,7 +426,7 @@ public class TaskManagerTest <T extends TaskManager> {
         taskManager.deleteSubTaskById(4);
         assertNotNull(taskManager.getAllEpics(), "Список Epic пуст");
         assertEquals(2, taskManager.getSubTaskMemory().size(), "Подзадача удалилась");
-        assertEquals(2, taskManager.getPrioritizedSubTasks().size(), "Подзадача удалилась");
+        assertEquals(2, taskManager.getPrioritizedTasks().size(), "Подзадача удалилась");
         assertEquals(Status.IN_PROGRESS, taskManager.getEpicMemory().get(1).getStatus(), "Статус Эпика изменился");
     }
 
@@ -558,7 +558,7 @@ public class TaskManagerTest <T extends TaskManager> {
         assertNull(task2.getStartTime());
         assertNull(task2.getEndTime());
         assertNull(task2.getDuration());
-        taskManager.savePrioritizedTask(task2);
+        taskManager.saveTask(task2);
         assertNotNull(task2.getStartTime());
         assertNull(task2.getEndTime());
         assertNull(task2.getDuration());
@@ -570,7 +570,7 @@ public class TaskManagerTest <T extends TaskManager> {
         assertNotNull(task1.getStartTime());
         assertNotNull(task1.getEndTime());
         assertNotNull(task1.getDuration());
-        taskManager.savePrioritizedTask(task1);
+        taskManager.saveTask(task1);
         assertTrue(taskManager.getPrioritizedTasks().containsValue(task1));
     }
 
@@ -579,22 +579,24 @@ public class TaskManagerTest <T extends TaskManager> {
         assertNull(subTask2.getStartTime());
         assertNull(subTask2.getEndTime());
         assertNull(subTask2.getDuration());
-        taskManager.savePrioritizedSubTask(subTask2);
+        taskManager.saveTask(subTask2);
         assertNotNull(subTask2.getStartTime());
         assertNull(subTask2.getEndTime());
         assertNull(subTask2.getDuration());
-        assertTrue(taskManager.getPrioritizedSubTasks().containsValue(subTask2));
+        assertTrue(taskManager.getPrioritizedTasks().containsValue(subTask2));
     }
 
     @Test
     void saveSubTaskToData() {
-        taskManager.savePrioritizedSubTask(subTask4);
-        assertTrue(taskManager.getPrioritizedSubTasks().containsValue(subTask4));
+        taskManager.saveEpic(epic1);
+        subTask4.setEpicId(1);
+        taskManager.saveSubTask(subTask4);
+        assertTrue(taskManager.getPrioritizedTasks().containsValue(subTask4));
     }
 
     @Test
     void validateToError() {
-        taskManager.savePrioritizedTask(task1);
+        taskManager.saveTask(task1);
         task2 = task1;
         task2.setStartTime(task1.getStartTime().plusMinutes(20));
         TaskValidationException ex = assertThrows(
@@ -607,10 +609,12 @@ public class TaskManagerTest <T extends TaskManager> {
 
     @Test
     void validateNotError() {
-        taskManager.savePrioritizedTask(task1);
-        task2 = task1;
-        task2.setStartTime(task1.getStartTime().plusMinutes(1580));
-        taskManager.savePrioritizedTask(task2);
+        taskManager.saveTask(task1);
+        LocalDateTime timeStart = task1.getStartTime().plusMinutes(1580);
+        Integer duration = task1.getDuration();
+        task2.setStartTime(timeStart);
+        task2.setDuration(duration);
+        taskManager.saveTask(task2);
         taskManager.validate(task3);
     }
 
@@ -623,21 +627,18 @@ public class TaskManagerTest <T extends TaskManager> {
 
     @Test
     void startAndEndTimeEpicNormalWork() {
-        ArrayList <Integer> subTasks = new ArrayList<>();
-        subTasks.add(2);
-        subTasks.add(3);
-        epic1.setSubtaskIds(subTasks);
         assertNull(epic1.getStartTime());
         assertNull(epic1.getEndTime());
         assertNull(epic1.getDuration());
-        subTask1.setEpicId(0);
-        subTask4.setEpicId(0);
-        taskManager.savePrioritizedSubTask(subTask1);
-        taskManager.savePrioritizedSubTask(subTask4);
+        taskManager.saveEpic(epic1);
+        subTask1.setEpicId(1);
+        subTask4.setEpicId(1);
+        taskManager.saveSubTask(subTask1);
+        taskManager.saveSubTask(subTask4);
         taskManager.startAndEndTimeEpic(epic1);
         assertEquals(subTask1.getStartTime(),epic1.getStartTime());
         assertEquals(subTask4.getEndTime(),epic1.getEndTime());
-        assertEquals(4380,epic1.getDuration());
+        assertEquals(300,epic1.getDuration());
     }
 
     @Test

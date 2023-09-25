@@ -4,6 +4,7 @@ import entility.Epic;
 import entility.SubTask;
 import entility.Task;
 import entility.Type;
+import exception.ManagerSaveException;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -101,7 +102,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                         manager.epicMemory.put(task.getId(), (Epic) task);
                     } else {
                         manager.subTaskMemory.put(task.getId(), (SubTask) task);
-                        manager.prioritizedSubTasks.put(task.getStartTime(), (SubTask) task);
+                        manager.prioritizedTasks.put(task.getStartTime(), (SubTask) task);
                         if (manager.epicMemory.containsKey(((SubTask) task).getEpicId())) {
                             if (manager.epicMemory.get(((SubTask) task).getEpicId()).getSubtaskIds() == null) {
                                 ArrayList<Integer> idSubTask = new ArrayList<>();
