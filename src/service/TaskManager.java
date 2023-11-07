@@ -19,7 +19,7 @@ public interface  TaskManager {
     List <Epic> getAllEpics();
     void saveEpic(Epic epic);
     void updateEpic(Epic epic);
-    List <SubTask> subTasksByEpic(Epic epic);
+    List<SubTask> subTasksByEpic(Epic epic);
     void deleteAllEpic();
     Epic getEpicById(int id);
     void deleteEpicById(int id);
@@ -45,4 +45,6 @@ public interface  TaskManager {
 
     Map<LocalDateTime, Task> getPrioritizedTasks();
     void validate(Task task);
+
+    void load();
 }

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefaultBackedTask();
         Task task1 = new Task("Задача №1", "Описание задачи №1",
                 "24.08.2023 12:00", 60);
@@ -44,11 +44,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         TaskManager loadTaskManager = FileBackedTasksManager.loadFromFile(
                 new File("src/resource/BackedInformation.csv"));
         System.out.println(loadTaskManager.getPrioritizedTask());
+    }*/
+
+    private File file ;
+
+    public FileBackedTasksManager(File file) {
+        this.file = file;
     }
 
-    private File file = new File("src/resource/BackedInformation.csv");
-
-    private void save() {
+    protected void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write(CSVFormatHandler.getHeader());
             writer.newLine();
@@ -75,7 +79,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     static FileBackedTasksManager loadFromFile(File file) {
-        FileBackedTasksManager manager = new FileBackedTasksManager();
+        FileBackedTasksManager manager = new FileBackedTasksManager(file);
         try {
             String content = Files.readString(Path.of(String.valueOf(file)));
             String[] textString = content.split("\n");

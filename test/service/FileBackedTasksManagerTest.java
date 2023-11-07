@@ -13,7 +13,7 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FileBackedTasksManagerTest extends TaskManagerTest <FileBackedTasksManager > {
+class FileBackedTasksManagerTest extends TaskManagerTest <FileBackedTasksManager> {
 
     File fileTest = new File("test/resource/BackedInformationTest.csv");
     File fileTestLoad = new File("test/resource/BackedInformationTestLoad.csv");

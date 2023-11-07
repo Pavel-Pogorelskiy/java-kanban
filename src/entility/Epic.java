@@ -30,8 +30,14 @@ public class Epic extends Task {
             return false;
         }
         Epic t = (Epic) obj;
-        return t.getName().equals(getName())&&t.getDescription().equals(getDescription())&&t.getId()
-                == (getId())&&t.getStatus().equals(getStatus())&&t.getType().equals(getType())&&t.getSubtaskIds().equals(getSubtaskIds());
+        if (t.getSubtaskIds() == null && getSubtaskIds() == null) {
+            return t.getName().equals(getName()) && t.getDescription().equals(getDescription()) && t.getId()
+                    == (getId()) && t.getStatus().equals(getStatus()) && t.getType().equals(getType());
+        } else {
+            return t.getName().equals(getName()) && t.getDescription().equals(getDescription()) && t.getId()
+                    == (getId()) && t.getStatus().equals(getStatus()) && t.getType().equals(getType())
+                    && t.getSubtaskIds().equals(getSubtaskIds());
+        }
     }
 
     @Override

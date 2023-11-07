@@ -69,4 +69,6 @@ public class CustomLinkedList {
         }
         map.remove(node.getValue().getId());
     }
+
+
 }

@@ -28,7 +28,7 @@ public abstract class TaskManagerTest <T extends TaskManager> {
     protected SubTask subTask4;
 
 
-    void init() {
+    protected void init() {
         task1 = new Task("Задача №1", "Описание задачи №1",
                 "24.08.2023 12:00", 60);
         task2 = new Task("Задача №2", "Описание задачи №2");

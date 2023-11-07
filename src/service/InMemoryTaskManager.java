@@ -14,7 +14,6 @@ public class InMemoryTaskManager implements TaskManager {
     protected HashMap<Integer, Task> taskMemory = new HashMap<>();
     protected HashMap<Integer, Epic> epicMemory = new HashMap<>();
     protected Map<LocalDateTime, Task> prioritizedTasks = new TreeMap<>(LocalDateTime::compareTo);
-    //protected Map<LocalDateTime, SubTask> prioritizedSubTasks = new TreeMap<>(LocalDateTime::compareTo);
 
     @Override
     public Integer numberId() {
@@ -30,10 +29,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getPrioritizedTask() {
-        //List<Task> prioritizedTask = Stream.concat(prioritizedTasks.values().stream(),
-                        //prioritizedSubTasks.values().stream())
         List<Task> prioritizedTask = prioritizedTasks.values().stream()
-                //.sorted((subTask1, subTask2) -> subTask1.getStartTime().compareTo(subTask2.getStartTime()))
                 .map((task) -> {
                     if (task.getEndTime() == null) {
                         task.setStartTime(null);
@@ -391,11 +387,19 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
+    @Override
+    public void load() {
+    }
+
     public LocalDateTime getNumberDate() {
         return numberDate;
     }
 
     public Map<LocalDateTime, Task> getPrioritizedTasks() {
         return prioritizedTasks;
+    }
+
+    public HistoryManager getHistoryManager() {
+        return historyManager;
     }
 }

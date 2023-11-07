@@ -1,12 +1,19 @@
 package service;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import http.HttpTaskManager;
+
+import java.io.File;
+import java.time.LocalDateTime;
+
 public final class Managers {
     private Managers() {
 
     }
 
     public static TaskManager getDefault() {
-        return new InMemoryTaskManager();
+        return new HttpTaskManager(8080);
     }
 
     public static HistoryManager getDefaultHistory() {
@@ -14,6 +21,12 @@ public final class Managers {
     }
 
     public static TaskManager getDefaultBackedTask() {
-        return new FileBackedTasksManager();
+        return new FileBackedTasksManager(new File("src/resource/BackedInformation.csv"));
+    }
+
+    public static Gson getGson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDataTimeAdapter());
+        return gsonBuilder.create();
     }
 }
