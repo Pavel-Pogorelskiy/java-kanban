@@ -3,9 +3,12 @@ package entility;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import server.HttpTaskServer;
+import service.InMemoryTaskManager;
 import service.Managers;
 import service.TaskManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -21,8 +24,8 @@ class EpicTest {
     private SubTask subTask3;
 
     @BeforeEach
-    void setUp(){
-        taskManager = Managers.getDefault();
+    void setUp() throws IOException {
+        taskManager = new InMemoryTaskManager();
         epic1 = new Epic("Эпика №1", "Описание эпика №1");
         epic1.setId(1);
         epicNull = null;

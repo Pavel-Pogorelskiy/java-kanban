@@ -24,10 +24,14 @@ public class HttpTaskServer {
     private TaskManager manager;
     private Gson gson;
 
-    public HttpTaskServer() throws IOException {
+    public HttpTaskServer() {
+        manager = Managers.getDefault();
+    }
+
+    public HttpTaskServer(TaskManager manager) throws IOException {
         server = HttpServer.create(new InetSocketAddress("localhost", PORT), 0);
         server.createContext("/tasks", new TaskHandler());
-        manager = Managers.getDefaultBackedTask();
+        this.manager = manager;
     }
 
     public class TaskHandler implements HttpHandler {
@@ -73,6 +77,10 @@ public class HttpTaskServer {
                             InputStream inputStream = httpExchange.getRequestBody();
                             if (inputStream != null) {
                                 String requestBody = new String(inputStream.readAllBytes(), DEFAULT_CHARSET);
+                                if (requestBody.isEmpty()) {
+                                    writeResponse(httpExchange, "Тело запроса пустое", 400);
+                                    return;
+                                }
                                 if (query == null) {
                                     System.out.println("Началась обработка запроса по созданию задачи");
                                     Task task = gson.fromJson(requestBody, Task.class);
@@ -143,6 +151,10 @@ public class HttpTaskServer {
                             InputStream inputStream = httpExchange.getRequestBody();
                             if (inputStream != null) {
                                 String requestBody = new String(inputStream.readAllBytes(), DEFAULT_CHARSET);
+                                if (requestBody.isEmpty()) {
+                                    writeResponse(httpExchange, "Тело запроса пустое", 400);
+                                    return;
+                                }
                                 if (query == null) {
                                     Epic epic = gson.fromJson(requestBody, Epic.class);
                                     if (epic.getId() == 0) {
@@ -221,6 +233,10 @@ public class HttpTaskServer {
                             InputStream inputStream = httpExchange.getRequestBody();
                             if (inputStream != null) {
                                 String requestBody = new String(inputStream.readAllBytes(), DEFAULT_CHARSET);
+                                if (requestBody.isEmpty()) {
+                                    writeResponse(httpExchange, "Тело запроса пустое", 400);
+                                    return;
+                                }
                                 if (query == null) {
                                     SubTask subTask = gson.fromJson(requestBody, SubTask.class);
                                     if (subTask.getId() == 0) {

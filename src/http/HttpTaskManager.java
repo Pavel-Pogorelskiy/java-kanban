@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class HttpTaskManager extends FileBackedTasksManager {
-    static final String TASK_KEY = "task";
-    static final String EPIC_KEY = "epic";
-    static final String SUBTASK_KEY = "subtask";
-    static final String HISTORY_KEY = "history";
+    private static final String TASK_KEY = "task";
+    private static final String EPIC_KEY = "epic";
+    private static final String SUBTASK_KEY = "subtask";
+    private static final String HISTORY_KEY = "history";
     private KVTaskClient client;
     private Gson gson;
     public static void main(String[] args) throws IOException {
